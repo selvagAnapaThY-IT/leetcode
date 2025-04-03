@@ -1,0 +1,18 @@
+class Solution(object):
+    def countDays(self, days, meetings):
+        total_covered = 0  # Tracks unique days covered
+        last_end = 0       # Keeps track of the end of the last meeting
+
+        for start, end in sorted(meetings):  # Sort meetings by start time
+            # If the current range starts after the previous range ends
+            if start > last_end:
+                total_covered += (end - start + 1)
+            else:
+                # Overlapping range; only add non-overlapping part
+                total_covered += max(0, end - last_end)
+
+            last_end = max(last_end, end)  # Update last_end
+
+        # Calculate uncovered days
+        uncovered_days = days - total_covered
+        return uncovered_days if uncovered_days > 0 else 0
